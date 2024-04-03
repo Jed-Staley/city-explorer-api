@@ -1,9 +1,11 @@
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
+const cors = require('cors');
 require('dotenv').config();
 
 const app = express();
+app.use(cors());
 const port = process.env.PORT;
 
 app.use(express.static(path.join(__dirname, '../city-explorer')));
@@ -25,17 +27,22 @@ app.get('/api/weather', (req, res) => {
 
     const weatherData = fs.readFileSync(path.join(__dirname, './data/weather.json'));
     const parsedData = JSON.parse(weatherData);
-    let cityWeather;
+    let forecast;
     for (let i = 0; i < parsedData.length; i++) {
       if (parsedData[i].city_name === city) {
-        cityWeather = parsedData[i].data;
+        forecast = [
+          { date: parsedData[i].data[0].datetime, description: parsedData[i].data[0].weather.description },
+          { date: parsedData[i].data[1].datetime, description: parsedData[i].data[1].weather.description },
+          { date: parsedData[i].data[2].datetime, description: parsedData[i].data[2].weather.description }
+        ];
+        console.log('forecast: ', forecast);
       }
     }
-    if (!cityWeather) {
+    if (!forecast) {
       return res.status(404).json({ error: 'Weather data not found for the specified city' });
     }
 
-    res.json(cityWeather);
+    res.json(forecast);
   } catch (error) {
     console.error('Error reading weather data:', error);
     res.status(500).json({ error: 'Internal server error' });
