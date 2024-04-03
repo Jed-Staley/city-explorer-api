@@ -1,0 +1,33 @@
+{
+  "name": "city-explorer-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jed-Staley/city-explorer-api.git"
+  },
+  "keywords": [
+    "key"
+  ],
+  "author": "Jedidiah Staley",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Jed-Staley/city-explorer-api/issues"
+  },
+  "homepage": "https://github.com/Jed-Staley/city-explorer-api#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.24.3",
+    "@babel/preset-env": "^7.24.3",
+    "@babel/preset-react": "^7.24.1",
+    "babel-loader": "^9.1.3"
+  }
+}
