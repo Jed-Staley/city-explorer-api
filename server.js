@@ -1,7 +1,6 @@
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
-const cors = require('cors');
 require('dotenv').config();
 
 const port = process.env.PORT;
@@ -9,9 +8,6 @@ const weatherAPIkey = process.env.WEATHER_API_KEY;
 const moviesAPIkey = process.env.MOVIES_API_KEY;
 
 const app = express();
-app.use(cors());
-
-app.use(express.static(path.join(__dirname, '../city-explorer')));
 
 const callAPI = (receiveURL, requestURL, dataMassage) => {
   app.get(receiveURL, async (req, res) => {
