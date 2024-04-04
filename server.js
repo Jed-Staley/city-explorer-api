@@ -4,6 +4,7 @@ const cors = require('cors');
 const axios = require('axios');
 require('dotenv').config();
 
+const PORT = process.env.PORT || 3000;
 const weatherAPIkey = process.env.WEATHER_API_KEY;
 const moviesAPIkey = process.env.MOVIES_API_KEY;
 
@@ -45,4 +46,8 @@ callAPI('/api/movies', (city) => `https://api.themoviedb.org/3/search/movie?quer
     returnArr.push({ title: parsedData.results[i].title, poster: `https://image.tmdb.org/t/p/w500${parsedData.results[i].poster_path || parsedData.results[i].backdrop_path}` });
   }
   return returnArr;
+})
+
+app.listen(PORT, () => {
+  console.log(`Running on port ${PORT}`)
 })
