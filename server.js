@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
-const fs = require('fs');
+const cors = require('cors');
+const axios = require('axios');
 require('dotenv').config();
 
 const port = process.env.PORT;
@@ -8,6 +9,7 @@ const weatherAPIkey = process.env.WEATHER_API_KEY;
 const moviesAPIkey = process.env.MOVIES_API_KEY;
 
 const app = express();
+app.use(cors());
 
 const callAPI = (receiveURL, requestURL, dataMassage) => {
   app.get(receiveURL, async (req, res) => {
@@ -47,5 +49,5 @@ callAPI('/api/movies', (city) => `https://api.themoviedb.org/3/search/movie?quer
 })
 
 app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
+  console.log(`Server is running on port ${port}`);
 });
