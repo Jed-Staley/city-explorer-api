@@ -4,7 +4,6 @@ const cors = require('cors');
 const axios = require('axios');
 require('dotenv').config();
 
-const port = process.env.PORT
 const weatherAPIkey = process.env.WEATHER_API_KEY;
 const moviesAPIkey = process.env.MOVIES_API_KEY;
 
@@ -47,7 +46,3 @@ callAPI('/api/movies', (city) => `https://api.themoviedb.org/3/search/movie?quer
   }
   return returnArr;
 })
-
-app.listen(port, () =>
-  console.log(`running on ${port}`)
-)
