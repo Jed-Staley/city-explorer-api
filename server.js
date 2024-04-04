@@ -47,3 +47,7 @@ callAPI('/api/movies', (city) => `https://api.themoviedb.org/3/search/movie?quer
   }
   return returnArr;
 })
+
+app.listen(port, () =>
+  console.log(`running on ${port}`)
+)
