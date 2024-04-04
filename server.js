@@ -4,9 +4,10 @@ const fs = require('fs');
 const cors = require('cors');
 require('dotenv').config();
 
+const port = process.env.PORT;
+const weatherAPIkey = process.env.WEATHER_API_KEY;
 const app = express();
 app.use(cors());
-const port = process.env.PORT;
 
 app.use(express.static(path.join(__dirname, '../city-explorer')));
 
@@ -18,31 +19,32 @@ app.use((req, res, next) => {
   next();
 });
 
-app.get('/api/weather', (req, res) => {
+app.get('/api/weather',  async (req, res) => {
   try {
     const city = req.query.city;
-    if (!city) {
-      return res.status(400).json({ error: 'City parameter is required' });
-    }
 
-    const weatherData = fs.readFileSync(path.join(__dirname, './data/weather.json'));
-    const parsedData = JSON.parse(weatherData);
-    let forecast;
-    for (let i = 0; i < parsedData.length; i++) {
-      if (parsedData[i].city_name === city) {
-        forecast = [
-          { date: parsedData[i].data[0].datetime, description: parsedData[i].data[0].weather.description },
-          { date: parsedData[i].data[1].datetime, description: parsedData[i].data[1].weather.description },
-          { date: parsedData[i].data[2].datetime, description: parsedData[i].data[2].weather.description }
-        ];
-        console.log('forecast: ', forecast);
-      }
-    }
-    if (!forecast) {
+    // if (!city) {
+    //   return res.status(400).json({ error: 'City parameter is required' });
+    // }
+    // const weatherData = fs.readFileSync(path.join(__dirname, './data/weather.json'));
+
+    console.log(`https://api.weatherbit.io/v2.0/forecast/daily?city=${city}&key=${weatherAPIkey}&days=3`)
+    const response = await fetch(
+      `https://api.weatherbit.io/v2.0/forecast/daily?city=${city}&key=${weatherAPIkey}&days=3`
+    );
+    const weatherData = await response.json();
+    console.log(weatherData)
+
+    let Forecast = [
+      { date: weatherData.data[0].datetime, description: weatherData.data[0].weather.description },
+      { date: weatherData.data[1].datetime, description: weatherData.data[1].weather.description },
+      { date: weatherData.data[2].datetime, description: weatherData.data[2].weather.description }
+    ];
+    if (!Forecast) {
       return res.status(404).json({ error: 'Weather data not found for the specified city' });
     }
 
-    res.json(forecast);
+    res.json(Forecast);
   } catch (error) {
     console.error('Error reading weather data:', error);
     res.status(500).json({ error: 'Internal server error' });
