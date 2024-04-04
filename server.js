@@ -42,7 +42,7 @@ callAPI('/api/weather', (city) => `https://api.weatherbit.io/v2.0/forecast/daily
 callAPI('/api/movies', (city) => `https://api.themoviedb.org/3/search/movie?query=${city}&api_key=${moviesAPIkey}`, (parsedData) => {
   let returnArr = []
   for (let i = 0; i < parsedData.results.length; i++) {
-    returnArr.push(parsedData.results[i].title);
+    returnArr.push({ title: parsedData.results[i].title, poster: `https://image.tmdb.org/t/p/w500${parsedData.results[i].poster_path || parsedData.results[i].backdrop_path}` });
   }
   return returnArr;
 })
