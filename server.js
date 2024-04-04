@@ -6,50 +6,49 @@ require('dotenv').config();
 
 const port = process.env.PORT;
 const weatherAPIkey = process.env.WEATHER_API_KEY;
+const moviesAPIkey = process.env.MOVIES_API_KEY;
+
 const app = express();
 app.use(cors());
 
 app.use(express.static(path.join(__dirname, '../city-explorer')));
 
-// Middleware to set the correct Content-Type header for JavaScript modules
-app.use((req, res, next) => {
-  if (req.originalUrl.endsWith('.jsx')) {
-    res.setHeader('Content-Type', 'application/javascript');
-  }
-  next();
-});
+const callAPI = (receiveURL, requestURL, dataMassage) => {
+  app.get(receiveURL, async (req, res) => {
+    try {
+      const city = req.query.city;
+      console.log('contacting', requestURL(city));
+      const response = await fetch(requestURL(city));
+      const parsedData = await response.json();
+      const massagedData = dataMassage(parsedData);
 
-app.get('/api/weather',  async (req, res) => {
-  try {
-    const city = req.query.city;
+      if (!massagedData) {
+        return res.status(404).json({ error: 'Data not found for the specified city' });
+      }
+      res.json(massagedData);
 
-    // if (!city) {
-    //   return res.status(400).json({ error: 'City parameter is required' });
-    // }
-    // const weatherData = fs.readFileSync(path.join(__dirname, './data/weather.json'));
-
-    console.log(`https://api.weatherbit.io/v2.0/forecast/daily?city=${city}&key=${weatherAPIkey}&days=3`)
-    const response = await fetch(
-      `https://api.weatherbit.io/v2.0/forecast/daily?city=${city}&key=${weatherAPIkey}&days=3`
-    );
-    const weatherData = await response.json();
-    console.log(weatherData)
-
-    let Forecast = [
-      { date: weatherData.data[0].datetime, description: weatherData.data[0].weather.description },
-      { date: weatherData.data[1].datetime, description: weatherData.data[1].weather.description },
-      { date: weatherData.data[2].datetime, description: weatherData.data[2].weather.description }
-    ];
-    if (!Forecast) {
-      return res.status(404).json({ error: 'Weather data not found for the specified city' });
+    } catch (error) {
+      console.error('Error contacting API server: ', error);
+      res.status(500).json({ error: 'Internal server error' });
     }
+  });
+}
 
-    res.json(Forecast);
-  } catch (error) {
-    console.error('Error reading weather data:', error);
-    res.status(500).json({ error: 'Internal server error' });
+callAPI('/api/weather', (city) => `https://api.weatherbit.io/v2.0/forecast/daily?city=${city}&key=${weatherAPIkey}&days=7`, (parsedData) => {
+  let returnArr = []
+  for (let i = 0; i < parsedData.data.length; i++) {
+    returnArr.push({ date: parsedData.data[i].datetime, description: parsedData.data[i].weather.description });
   }
-});
+  return returnArr;
+})
+
+callAPI('/api/movies', (city) => `https://api.themoviedb.org/3/search/movie?query=${city}&api_key=${moviesAPIkey}`, (parsedData) => {
+  let returnArr = []
+  for (let i = 0; i < parsedData.results.length; i++) {
+    returnArr.push(parsedData.results[i].title);
+  }
+  return returnArr;
+})
 
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
