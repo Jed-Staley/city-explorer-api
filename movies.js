@@ -1,4 +1,5 @@
 const callAPI = require('./api-call');
+const moviesAPIkey = process.env.MOVIES_API_KEY;
 
 const handleMovies = () => {
   callAPI('/api/movies', (city) => `https://api.themoviedb.org/3/search/movie?query=${city}&api_key=${moviesAPIkey}`, (parsedData) => {
@@ -10,4 +11,4 @@ const handleMovies = () => {
   })
 }
 
-module.exports = handleMovies;
+module.exports = handleMovies
