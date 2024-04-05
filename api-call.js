@@ -22,7 +22,7 @@ const callAPI = (app, receiveURL, cacheProp, requestURL, dataMassage) => {
       const response = await fetch(requestURL(city));
       console.log('response:', response);
       const parsedData = await response.json();
-      console.log('parsedData:', parsedData);
+      console.log('parsedData:', parsedData)
       const massagedData = dataMassage(parsedData);
       console.log('massaged:', massagedData);
 
@@ -30,8 +30,7 @@ const callAPI = (app, receiveURL, cacheProp, requestURL, dataMassage) => {
         return res.status(404).json({ error: 'Data not found for the specified city' });
       }
 
-      cache[city].timeCached = new Date();
-      cache[city][cacheProp] = massagedData;
+      cache[city] = { timeCached: new Date(), [cacheProp]: massagedData };
       res.json(massagedData);
 
     } catch (error) {
