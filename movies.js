@@ -1,5 +1,4 @@
-const express = require('express');
-const app = express();
+const callAPI = require('./api-call');
 
 const handleMovies = () => {
   callAPI('/api/movies', (city) => `https://api.themoviedb.org/3/search/movie?query=${city}&api_key=${moviesAPIkey}`, (parsedData) => {
