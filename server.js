@@ -17,6 +17,7 @@ const handleMovies = require('./movies');
 // App Initialization
 const app = express();
 app.use(cors());
+app.use(express.static(path.join(__dirname, '../city-explorer')));
 
 // API calls
 handleWeather();
