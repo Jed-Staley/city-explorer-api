@@ -12,7 +12,8 @@ const callAPI = (app, receiveURL, cacheProp, requestURL, dataMassage) => {
       const dayPassed = currentTime.getDate() !== cache[city].timeCached.getDate();
       if (!expired && !dayPassed) {
         console.log('Reading cache');
-        return res.json(cache[city][cacheProp]);
+        res.json(cache[city][cacheProp])
+        return;
       }
       console.log('cache outdated');
     }
@@ -30,7 +31,7 @@ const callAPI = (app, receiveURL, cacheProp, requestURL, dataMassage) => {
         return res.status(404).json({ error: 'Data not found for the specified city' });
       }
 
-      cache[city] = { timeCached: new Date(), [cacheProp]: massagedData };
+      cache[city] = { timeCached: new Date(), [cacheProp]: [...massagedData] };
       res.json(massagedData);
 
     } catch (error) {
