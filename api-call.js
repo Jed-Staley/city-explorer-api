@@ -1,4 +1,4 @@
-const fetch = require('node-fetch');
+const axios = require('axios');
 
 const callAPI = (app, receiveURL, requestURL, dataMassage) => {
   app.get(receiveURL, async (req, res) => {
