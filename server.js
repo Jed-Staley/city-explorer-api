@@ -7,8 +7,6 @@ require('dotenv').config();
 
 // Environment Variables
 const PORT = process.env.PORT || 3000;
-const weatherAPIkey = process.env.WEATHER_API_KEY;
-const moviesAPIkey = process.env.MOVIES_API_KEY;
 
 // Modules
 const handleWeather = require('./weather');
@@ -17,7 +15,6 @@ const handleMovies = require('./movies');
 // App Initialization
 const app = express();
 app.use(cors());
-app.use(express.static(path.join(__dirname, '../city-explorer')));
 
 // API calls
 handleWeather();

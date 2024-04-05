@@ -1,5 +1,4 @@
-const express = require('express');
-const app = express();
+const fetch = require('node-fetch');
 
 const callAPI = (receiveURL, requestURL, dataMassage) => {
   app.get(receiveURL, async (req, res) => {

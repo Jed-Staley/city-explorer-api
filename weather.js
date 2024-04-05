@@ -1,4 +1,5 @@
 const callAPI = require('./api-call');
+const weatherAPIkey = process.env.WEATHER_API_KEY;
 
 const handleWeather = () => {
   callAPI('/api/weather', (city) => `https://api.weatherbit.io/v2.0/forecast/daily?city=${city}&key=${weatherAPIkey}&days=7`, (parsedData) => {
