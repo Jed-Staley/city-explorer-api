@@ -20,7 +20,9 @@ const callAPI = (app, receiveURL, cacheProp, requestURL, dataMassage) => {
     try {
       console.log('contacting', requestURL(city));
       const response = await fetch(requestURL(city));
+      console.log('response:', response);
       const parsedData = await response.json();
+      console.log('parsedData:', parsedData);
       const massagedData = dataMassage(parsedData);
       console.log('massaged:', massagedData);
 
