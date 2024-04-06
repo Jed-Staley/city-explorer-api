@@ -11,7 +11,6 @@ const PORT = process.env.PORT || 3000;
 // Modules
 const handleWeather = require('./weather');
 const handleMovies = require('./movies');
-const callAPI = require('./api-call');
 
 // App Initialization
 const app = express();
