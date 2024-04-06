@@ -6,7 +6,7 @@ const callAPI = (app, receiveURL, cacheProp, requestURL, dataMassage) => {
     const city = req.query.city;
     console.log('city:', city);
     if (cache[city] !== undefined) {
-      console.log('Acessing cache');
+      console.log('Acessing cache', cache);
       const currentTime = new Date();
       const expired = (currentTime.getTime() - cache[city].timeCached.getTime()) > 86400000;
       const dayPassed = currentTime.getDate() !== cache[city].timeCached.getDate();
