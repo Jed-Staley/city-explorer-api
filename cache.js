@@ -1,3 +1,3 @@
 const cache = {};
 
-module.exports cache;
+module.exports = cache;
